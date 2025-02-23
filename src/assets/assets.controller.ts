@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, NotFoundException } from '@nestjs/common';
 import { AssetsService } from './assets.service';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { AssetPresenter } from './asset.presenter';
@@ -22,6 +22,11 @@ export class AssetsController {
   @Get(':symbol')
   async findOne(@Param('symbol') symbol: string) {
     const asset = await this.assetsService.findOne(symbol);
+
+    if (!asset) {
+      throw new NotFoundException(`Asset with symbol '${symbol}' not found`);
+    }
+    
     return new AssetPresenter(asset!);
   }
 }

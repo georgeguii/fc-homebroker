@@ -4,6 +4,10 @@ export class AssetPresenter {
   constructor(private asset: Asset) {}
 
   toJSON() {
+    if (!this.asset) {
+      return null;
+    }
+
     return {
       _id: this.asset._id,
       name: this.asset.name,
